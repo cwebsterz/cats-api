@@ -1,4 +1,4 @@
-const catsData = [
+var catsData = [
   {
     id: 2,
     type: 'cat',
@@ -22,10 +22,11 @@ const catsData = [
   }
 ]
 
-const { append, find } = require('ramda')
+const { append, find, compose, reject } = require('ramda')
 
 function add(cat, callback) {
-  console.log('meow')
+  catsData = append(cat, catsData)
+  callback(null, cat)
 }
 
 function listCats(callback) {
@@ -37,10 +38,24 @@ function showCat(catId, callback) {
   callback(null, foundCat)
 }
 
+function updateCat(id, cat, callback) {
+  catsData = compose(append(cat), reject(c => c.id === id))(catsData)
+
+  callback(null, cat)
+}
+
+function removeCat(id, callback) {
+  catsData = compose(reject(c => c.id === id)(catsData))
+
+  callback(null, catsData)
+}
+
 const dal = {
   add,
   listCats,
-  showCat
+  showCat,
+  updateCat,
+  removeCat
 }
 
 module.exports = dal
