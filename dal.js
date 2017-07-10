@@ -22,14 +22,25 @@ const catsData = [
   }
 ]
 
-const { append } = require('ramda')
+const { append, find } = require('ramda')
 
 function add(cat, callback) {
   console.log('meow')
 }
 
+function listCats(callback) {
+  callback(null, catsData)
+}
+
+function showCat(catId, callback) {
+  const foundCat = find(cat => cat.id === catId, catsData)
+  callback(null, foundCat)
+}
+
 const dal = {
-  add
+  add,
+  listCats,
+  showCat
 }
 
 module.exports = dal
